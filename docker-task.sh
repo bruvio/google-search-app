@@ -2,8 +2,8 @@
 # Helper scripts for working with Docker image and container.
 
 # Variables
-IMAGE_NAME="xxxxxxx"
-CONTAINER_NAME="xxxxxx"
+IMAGE_NAME="python-django-app-search"
+CONTAINER_NAME="python-django-app-search"
 AWS_REGION="us-east-1"
 accountid=$(aws sts get-caller-identity --query Account --output text)
 
