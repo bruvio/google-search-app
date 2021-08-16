@@ -63,6 +63,7 @@ rm temp.yml
 . temp.yml
 rm temp.yml
 
+lice -y 2021 -o "Bruno Viola" -f LICENSE.md
 
 echo Done
 echo Restart the shell to activate environment
