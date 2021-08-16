@@ -6,3 +6,4 @@ services:
     build:
       context: .
       dockerfile: pytest.dockerfile
+    network_mode: bridge
