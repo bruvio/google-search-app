@@ -5,7 +5,7 @@ This repo aims at writing code to run a google search for 'how to data engineeri
 It will also create a docker container to perform such task using a simple django app.
 
 To create this repo a template repo has been used (see: <a href="https://github.com/bruvio/pyproject_template" title="Python project template">template</a>)
-, useful for defining the Python virtual enviroment and containing useful script for automation (pre-commit hooks, template dockerfiles, ...
+, useful for defining the Python virtual enviroment and containing useful script for automation (pre-commit hooks, template dockerfiles, ...)
 
 ### 1. Initial Setup
 
@@ -80,7 +80,7 @@ Mono-repo style
 ```
 
 - `search_engine-project`: contains the django webapp
-- `search_engine-project/engine/tests/`: tests for basic operations on the app.
+- `search_engine-project/engine/tests/`: tests for basic operations on the app
 - `search_engine/utils/`: help functions
 - `Dockerfile`: dockerfile for building an image and future deployment to AWS (or other cloud provider)
 - `pytest-Dockerfile`: dockerfile for local testing
@@ -142,7 +142,7 @@ docker-compose up
 
 ### 8. deploy to AWS
 
-to deploy to AWS, I included two bash script to simplify operation
+to deploy to AWS, I included two bash scripts to simplify operations.
 
 A prerequisite is to have setup AWS cli and a profile.
 
@@ -160,7 +160,7 @@ then build and push the docker image to ECR
 
 `./docker-task.sh buildpush`
 
-This will push into your ECR repository called biotech (edit the docker-task.sh file to change defaults name)
+This will push into your ECR repository called webscrapingapp (edit the docker-task.sh file to change defaults name)
 
 now just run
 
