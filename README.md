@@ -1,29 +1,176 @@
-# Introduction 
-Data Engineering Project
+# bruvio biotech-dashboard
 
-This is a take home test for the front office engineering team.
-You're required to fork this repository and return a link to your repository with the completed exercise.
+This repo aims at writing code to run a google search for 'how to data engineering' and then scrape the first 5 links in that google search and store the corresponding html.
 
-# Restrictions.
-1. You have ~48hrs to complete the take home test after you have been given the link to the repository.
-2. You will be required to walk through the answers to the questions in the follow up interview.
-3. You can use any programming language you like but we predominantly use python 3 in the front office engineering team. 
+It will also create a docker container to perform such task using a simple django app.
 
-# Test Question
-1. Write code to run a google search for 'how to data engineering'. We want to scrape the first 5 links in that google search and store the corresponding html.
-2. Write a docker file that the above code will run including the commands to build the docker container and how to run it.
+To create this repo a template repo has been used (see: [link text](URL "https://github.com/bruvio/pyproject_template")
+, useful for defining the Python virtual enviroment and containing useful script for automation (pre-commit hooks, template dockerfiles, ...
 
-# How you will be assessed.
-We are looking for a well engineered solution that is ready to ship (not a single script file).  Your code needs to demonstrate the following:
-1. Your code will need to solve the problem.
-2. Your code needs to be packaged and include your environment setup.
-3. Your code needs to scale, Think about runtime, run environment and memory.
-4. Your code needs to be clean and well tested.
-5. Make sure you add a README and all required documentation.
+### 1. Initial Setup
 
-## Questions in the interview (written answers are not required)
-1. What are the libraries you have used and why?
-2. Does your algorithm scale? What about if we wanted to store the first 50k responses?
-3. How would you design a data pipeline to process the output from the scraped websites?
-4. How would your design fit into an event driven architecture?
-5. How would you architect the application, data pipeline in AWS or another cloud provider?
+**Quick Setup** (prereq: `git, python3.8`,`docker` )
+
+```bash
+git clone <reponame>
+python -m venv .env3.8
+pip install -r requirements.txt
+```
+
+#### Project Structure:
+
+Mono-repo style
+
+```
+├── AWS_deploy.sh
+├── constraints.txt
+├── docker-compose.yaml
+├── Dockerfile
+├── docker-task.sh
+├── isort.cfg
+├── LICENSE.md
+├── orphan_branch.sh
+├── project_setup.sh
+├── __pycache__
+│   ├── google_search_utils.cpython-38.pyc
+│   └── main.cpython-38.pyc
+├── pytest.dockerfile
+├── pytest.ini
+├── README.md
+├── README_task.md
+├── requirements-dev.txt
+├── requirements.txt
+├── saved
+├── search_engine-project
+│   ├── db.sqlite3
+│   ├── engine
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── __init__.py
+│   │   ├── migrations
+│   │   │   ├── __init__.py
+│   │   │   └── __pycache__
+│   │   │       └── __init__.cpython-38.pyc
+│   │   ├── models.py
+│   │   ├── templates
+│   │   │   └── engine
+│   │   │       ├── about.html
+│   │   │       ├── home.html
+│   │   │       └── password.html
+│   │   ├── tests
+│   │   │   ├── conftest.py
+│   │   │   ├── __init__.py
+│   │   │   └── test_search.py
+│   │   ├── tests.py
+│   │   └── views.py
+│   ├── manage.py
+│   ├── search_engine
+│   │   ├── asgi.py
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   └── utils
+│       ├── google_search_utils.py
+│       └── __init__.py
+└── templates
+    ├── core-infrastructure-setup.yml
+    └── ecs-webapp-stack.yml
+
+```
+
+- `search_engine-project`: contains the django webapp
+- `search_engine-project/engine/tests/`: tests for basic operations on the app.
+- `search_engine/utils/`: help functions
+- `Dockerfile`: dockerfile for building an image and future deployment to AWS (or other cloud provider)
+- `pytest-Dockerfile`: dockerfile for local testing
+- `.github`: folder containing 2 workflows for automation: one tests the app in a github runner, the second builds a docker image
+- `docker-task`: script to simplify operations with docker
+- `AWS_deploy.sh`: script to deploy on AWS
+- `templates/`: folder containing cloudformation scripts to deploy on AWS
+
+### 4. Starting the environment
+
+# option a
+
+To start the app locally from the terminal run
+
+`./run.sh`
+
+The service will start listening at
+
+`http://127.0.0.1:8000`
+
+# option b
+
+To start the app from a docker container from the terminal run
+
+`./docker/task.sh buildrun`
+
+The service will start listening at
+`http://localhost:9999`
+
+### 5. Building Docker image
+
+To create a docker image (withou using my docker-task script)run
+
+```
+docker build -t python-django-app-search .
+```
+
+### 6. Running app from container locally
+
+To run the app from the container locally run from the terminal
+
+```
+docker run -i -p 8000:8000 -d python-django-app-search
+```
+
+and then from the browser visit
+
+```
+localhost:8000
+```
+
+### 7. local testing using a docker container
+
+To run a local test using a docker container run
+
+```
+docker-compose up
+```
+
+### 8. deploy to AWS
+
+to deploy to AWS, I included two bash script to simplify operation
+
+A prerequisite is to have setup AWS cli and a profile.
+
+Run first
+
+`..`
+
+this will display how to use the script
+
+First create a new repository on ECR
+
+`./docker-task.sh createrepo`
+
+then build and push the docker image to ECR
+
+`./docker-task.sh buildpush`
+
+This will push into your ECR repository called biotech (edit the docker-task.sh file to change defaults name)
+
+now just run
+
+`./AWS_deploy.sh`
+
+this will start the creation of two Cloudformation stacks: 1) for the core infrastructure (VPC, SG, subnets..) the other will start a ECS cluster.
+
+After 5/10 minutes you will find on the terminal the DNS of the application load balancer.
+Copy and paste it into a browser tab to launch the app.
+
+## Authors
+
+- **Bruno Viola** - _Initial work_ - [bruvio](https://github.com/bruvio)
