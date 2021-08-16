@@ -7,3 +7,5 @@ pre-commit
 flake8
 ipykernel
 lice
+django
+googlesearch
