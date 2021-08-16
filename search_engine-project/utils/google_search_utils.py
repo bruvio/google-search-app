@@ -12,8 +12,8 @@ def searchWeb(num=5, stop=5, query_string="how to data engineering"):
     """se google api to search the web for a given inpunt string and save resulting url to list
 
     Args:
-        num (int, optional): [num of links to search]. Defaults to 5.
-        stop (int, optional): [stop search after finding this much links]. Defaults to 5.
+        num (int, optional): [Number of results per page.]. Defaults to 5.
+        stop (int, optional): [Last result to retrieve. Use None to keep searching forever.]. Defaults to 5.
         query_string (str, optional): [string to search]. Defaults to "how to data engineering".
 
     Returns:
@@ -22,7 +22,7 @@ def searchWeb(num=5, stop=5, query_string="how to data engineering"):
 
     # to search
     query_resuts = []
-    for result in search(query_string, tld="co.in", num=num, stop=stop, pause=2):
+    for result in search(query_string, tld="co.in", num=num, stop=stop, pause=0.5):
         logging.info(result)
         query_resuts.append(result)
     return query_resuts
@@ -92,7 +92,7 @@ def parseDomainName(url):
 
 if __name__ == "__main__":
     start = time.time()
-    urls = searchWeb(num=10)
+    urls = searchWeb(num=100, stop=100)
 
     print("Elapsed Time: %s" % (time.time() - start))
     print(urls)

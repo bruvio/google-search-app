@@ -12,7 +12,7 @@ def home(request):
 
 
 def search(request):
-    urls = searchWeb(num=5)
+    urls = searchWeb(num=5, stop=5)
 
     threads = [threading.Thread(target=getSavePage, args=(url,)) for url in urls]
     for thread in threads:
