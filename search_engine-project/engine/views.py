@@ -1,5 +1,8 @@
+import threading
+
 from django.http import HttpResponse
 from django.shortcuts import render
+from utils.google_search_utils import getSavePage, searchWeb
 
 
 # Create your views here.
@@ -9,7 +12,14 @@ def home(request):
 
 
 def search(request):
-    return HttpResponse("these are your search results")
+    urls = searchWeb(num=5)
+
+    threads = [threading.Thread(target=getSavePage, args=(url,)) for url in urls]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+    return HttpResponse(urls)
     # return render(request, "search results", {"search": mysearch})
 
 

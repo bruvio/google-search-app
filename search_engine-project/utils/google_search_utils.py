@@ -1,4 +1,5 @@
 import logging
+import os
 import threading
 import time
 
@@ -52,6 +53,10 @@ def savePageResponse(web_page_url, response, filename):
         filename ([string]): [string representing a filename]
     """
     page_content = response.text
+    # check if directory exists or not yet
+    if not os.path.exists("saved"):
+        os.makedirs("saved")
+
     with open("./saved/{}.html".format(filename), "w", encoding="utf8") as fp:
         fp.write(page_content)
 
