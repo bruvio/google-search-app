@@ -87,7 +87,7 @@ def parseDomainName(url):
 
 if __name__ == "__main__":
     start = time.time()
-    urls = searchWeb()
+    urls = searchWeb(num=10)
 
     print("Elapsed Time: %s" % (time.time() - start))
     print(urls)
