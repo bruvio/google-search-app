@@ -4,7 +4,7 @@ This repo aims at writing code to run a google search for 'how to data engineeri
 
 It will also create a docker container to perform such task using a simple django app.
 
-To create this repo a template repo has been used (see: [link text](URL "https://github.com/bruvio/pyproject_template")
+To create this repo a template repo has been used (see: [here](URL "https://github.com/bruvio/pyproject_template")
 , useful for defining the Python virtual enviroment and containing useful script for automation (pre-commit hooks, template dockerfiles, ...
 
 ### 1. Initial Setup
