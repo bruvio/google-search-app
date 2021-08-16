@@ -141,3 +141,4 @@ cython_debug/
 
 #folders to ignore
 /saved
+search_engine-project/engine/saved/
