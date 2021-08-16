@@ -8,4 +8,6 @@ flake8
 ipykernel
 lice
 django
-googlesearch
+google
+requests
+six
