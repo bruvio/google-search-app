@@ -1,4 +1,6 @@
-from google_search_utils import getPageContent, savePageResponse, searchWeb
+import os
+
+from utils.google_search_utils import getPageContent, savePageResponse, searchWeb
 
 
 def test_search():
@@ -13,7 +15,6 @@ def test_getPageContent():
 
 def test_savePage():
     # from pathlib import Path
-    import os
 
     filename = "test_file"
     response = getPageContent("http://www.trainigpeaks.com")
