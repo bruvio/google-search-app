@@ -1,6 +1,6 @@
 import threading
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from utils.google_search_utils import getSavePage, searchWeb
 
@@ -19,7 +19,8 @@ def search(request):
         thread.start()
     for thread in threads:
         thread.join()
-    return HttpResponse(urls)
+    return JsonResponse(urls, safe=False)
+    # return HttpResponse(urls)
     # return render(request, "search results", {"search": mysearch})
 
 
