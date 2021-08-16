@@ -1,4 +1,4 @@
-FROM python:$VERSION_IF_NOT_SET-slim
+FROM python:3.8-slim
 MAINTAINER bruvio
 
 COPY ./requirements.txt ./
