@@ -1,9 +1,10 @@
 import logging
+import threading
+import time
 
-import googlesearch
 import requests
 from googlesearch import search
-from requests.models import Response
+from six.moves.urllib.parse import quote
 
 
 def searchWeb(num=5, stop=5, query_string="how to data engineering"):
@@ -26,10 +27,15 @@ def searchWeb(num=5, stop=5, query_string="how to data engineering"):
     return query_resuts
 
 
-# google_results("how to data engineering", 5)
-
-
 def getPageContent(web_page_url):
+    """given an url, gets the page content and returns a response
+
+    Args:
+        web_page_url ([type]): [valid string representing an url]
+
+    Returns:
+        [type]: [request response]
+    """
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36"
     }
@@ -38,6 +44,13 @@ def getPageContent(web_page_url):
 
 
 def savePageResponse(web_page_url, response, filename):
+    """given an url a page response and a string saves to file the page content
+
+    Args:
+        web_page_url ([string]): [description]
+        response ([requests response]): [request response ]
+        filename ([string]): [string representing a filename]
+    """
     page_content = response.text
     with open("./saved/{}.html".format(filename), "w", encoding="utf8") as fp:
         fp.write(page_content)
@@ -45,7 +58,45 @@ def savePageResponse(web_page_url, response, filename):
     logging.info("Save web page content " + web_page_url + " successfully.")
 
 
+def getSavePage(url):
+    """function that wraps getPageContent, parseDomainName and savePageResponse
+    to implement multi threading
+
+
+    Args:
+        url ([str]): [valid string representing an url]
+    """
+    response = getPageContent(url)
+    filename = parseDomainName(url)
+    savePageResponse(url, response, filename)
+
+
+def parseDomainName(url):
+    """given an url return a strings that will be used to save the page as html file
+
+    Args:
+        url ([str]): [valid string representing an url]
+
+    Returns:
+        [str]: [string representing the filename]
+    """
+    filename = quote(url, "")
+
+    return filename
+
+
 if __name__ == "__main__":
-    print(searchWeb())
-    rsp = getPageContent("http://www.trainigpeaks.com")
-    savePageResponse("http://www.trainigpeaks.com", rsp, "provola")
+    start = time.time()
+    urls = searchWeb()
+
+    print("Elapsed Time: %s" % (time.time() - start))
+    print(urls)
+
+    start = time.time()
+    threads = [threading.Thread(target=getSavePage, args=(url,)) for url in urls]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    print("Elapsed Time: %s" % (time.time() - start))

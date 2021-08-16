@@ -1,5 +1,4 @@
-from requests.api import get
-from main import searchWeb, getPageContent, savePageResponse
+from google_search_utils import getPageContent, savePageResponse, searchWeb
 
 
 def test_search():
