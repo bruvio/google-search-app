@@ -91,7 +91,7 @@ Mono-repo style
 
 ### 4. Starting the environment
 
-# option a
+#### option a.
 
 To start the app locally from the terminal run
 
@@ -101,7 +101,7 @@ The service will start listening at
 
 `http://127.0.0.1:8000`
 
-# option b
+#### option b.
 
 To start the app from a docker container from the terminal run
 
@@ -112,7 +112,7 @@ The service will start listening at
 
 ### 5. Building Docker image
 
-To create a docker image (withou using my docker-task script)run
+To create a docker image (without using my docker-task script) run
 
 ```
 docker build -t python-django-app-search .
@@ -148,7 +148,7 @@ A prerequisite is to have setup AWS cli and a profile.
 
 Run first
 
-`..`
+`./docker-task.sh showUsage`
 
 this will display how to use the script
 
