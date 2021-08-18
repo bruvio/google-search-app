@@ -14,9 +14,8 @@ def home(request):
 
 
 def search(request):
-    form = SearchForm(request.POST)
-    if form.is_valid():  # this will validate your form
-        search_text = form.cleaned_data["search"]  # now you can access input
+    form = SearchForm(request.GET)
+    search_text = form.data["search_text"]  # now you can access input
     urls = searchWeb(num=5, stop=5, query_string=search_text)
 
     threads = [threading.Thread(target=getSavePage, args=(url,)) for url in urls]
@@ -24,9 +23,7 @@ def search(request):
         thread.start()
     for thread in threads:
         thread.join()
-    # return JsonResponse(urls, safe=False)
-    # return HttpResponse(urls)
-    return render(request, "search results", {"search": urls})
+    return render(request, "engine/search.html", {"search": urls})
 
 
 def about(request):
