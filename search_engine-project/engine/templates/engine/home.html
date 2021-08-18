@@ -2,21 +2,14 @@
 
 
 
-
-
 <div class="container text-center">
-    <h1>bruvio search engine</h1>
-    <h3>Pressing search will run a google search for 'how to data engineering', then the code will scrape the first 5 links in that google search and store the corresponding html.</h3>
+    <h1>my search engine</h1>
     <a href="{% url 'about' %}">About page</a>
     <br>
     <br>
-    <form action="{% url 'search' %}">
-
-
-
-    <input type='submit' value='search' class="btn btn-primary">
-
-
-
-    </form>
+        <form action="{% url 'search' %}">
+    <label for="search_text">Your search: </label>
+    <input id="search_text" type="text" name="search_text">
+    <input type="submit" value="Search">
+</form>
 </div>
